@@ -1,0 +1,40 @@
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+build/
+dist/
+.eggs/
+
+# Virtual environments
+venv/
+.venv/
+env/
+
+# laipro run outputs and caches (regenerated from source images)
+laipro_results/
+laipro_cache/
+**/laipro_results/
+**/laipro_cache/
+
+# trained models / labels (large, user-specific)
+models/
+labels/
+polys/
+
+# sample imagery and RAW files (large; do not commit)
+site_*/
+*.NEF *.CR2 *.CR3 *.ARW *.DNG *.ORF *.RW2 *.RAF *.PEF *.SRW
+*.JPG *.jpg *.jpeg *.tif *.tiff
+
+# PyInstaller
+*.spec.bak
+
+# OS / editor
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
+
+# Claude Code local settings
+.claude/
