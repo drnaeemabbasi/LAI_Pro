@@ -11,6 +11,8 @@ An open, Python replacement for the manual steps in CAN_EYE. It computes, from a
 
 Everything is built on published radiative-transfer methods (Poisson gap-fraction, ellipsoidal leaf-angle distribution, Lang & Yueqin clumping), and every run records its configuration and input file hashes so results are exactly reproducible.
 
+> **New here?** Read the **[User Guide](USER_GUIDE.md)** — a complete, step-by-step walkthrough from install to reading your results, written for first-time users.
+
 ---
 
 ## Quick start (command line)
