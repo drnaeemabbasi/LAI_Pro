@@ -267,14 +267,57 @@ In the app:
 
 > Paint and click **Train** *before* moving to the next photo — changing photos clears your paint.
 
-### Hide the operator's boots / monopod
+### Hide the operator's boots, monopod, or other objects
 
-If your feet or the pole appear in shots:
+Sometimes your feet, the monopod, or another object appear in a photo. Those pixels aren't crop, so they shouldn't be counted. laipro can **learn** what the object looks like — and where it usually sits — from a few examples you draw, then find and exclude it automatically in every photo. Crucially, it removes **only the object**, not a whole strip of the image, so you don't lose the real crop around it.
 
-1. Click the **object polygons** layer.
-2. Click the **rectangle** tool and **drag a box** around the boot. *(Rectangle is easiest. To use the polygon tool instead: click each corner, then **double-click** to finish — do not press Escape, that cancels it.)*
-3. Set **mask dir** to e.g. `models\rig`, then click **Train mask**.
-4. Click **Auto-mask (predict object)** on other photos to check it — it excludes only the object, not a whole strip.
+You teach it once per camera setup; after that it applies to the whole plot.
+
+**Step 1 — Go to a photo where the object is visible.**
+Use **Prev** / **Next** to reach a photo where the boot or monopod is clearly in frame.
+
+**Step 2 — Select the drawing layer.**
+In the layer list (bottom-left of the window), click the **object polygons** layer so it's selected (highlighted).
+
+**Step 3 — Draw around the object.**
+
+*The easy way — a box:*
+1. In the layer controls (top-left), click the **rectangle** tool. *(Hover over the small tool icons to see their names.)*
+2. On the photo, **click and drag** a box around the boot, then release the mouse. A red box appears — that's it, nothing else to press.
+3. If two boots or a pole are visible, drag a separate box around each.
+
+*If you'd rather trace the exact outline — the polygon tool:*
+1. Click the **add-polygon** tool.
+2. **Single-click** each corner point around the object.
+3. To finish, **double-click** on the last point.
+4. ⚠️ Do **not** press **Escape** to finish — Escape *deletes* the shape you're drawing. (This is the most common mistake.)
+
+**Step 4 — Teach it.**
+1. In the right panel, set **mask dir** to a name for this camera setup, e.g. `models\rig`.
+2. Click **Train mask**. The status bar at the bottom confirms it learned (e.g. "trained mask detector on … samples").
+
+> Draw your box/polygon and click **Train mask** *before* moving to another photo — changing photos clears anything you've drawn but not yet trained on.
+
+**Step 5 — Check it, and improve if needed (recommended).**
+1. Move to a **different** photo (**Next**).
+2. Click **Auto-mask (predict object)**. The **object mask** layer lights up showing what it would exclude on this photo.
+3. If it found the object cleanly, you're done.
+4. If it **missed** the object or **grabbed too much**: draw a corrective box on *this* photo and click **Train mask** again. Every correction is remembered and makes it better. Repeat on two or three photos until it reliably finds the object wherever it appears.
+
+**Step 6 — Process as usual.**
+With the mask trained, just click **Process folder (DHP)**. The object is now excluded from every photo automatically. To confirm it worked, check the results:
+- The **masked %** column in `per_image.csv` shows how much of each photo was excluded.
+- In the QC pictures (`qc/` folder), the excluded object appears in **red**.
+
+**Reusing the mask on other plots (same camera setup).**
+Your trained mask is saved in the folder you named (e.g. `models\rig`) and can be reused. From the command line:
+```powershell
+laipro process C:\MyLAI\Field7 --mask-model models\rig --latitude 50 --doy 200
+```
+You can also combine it with a trained vegetation model:
+```powershell
+laipro process C:\MyLAI\Field7 --model models\wheat --mask-model models\rig --latitude 50 --doy 200
+```
 
 ### Use your trained models later (command line)
 
